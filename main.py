@@ -9,7 +9,7 @@ pygame.init()
 screen = pygame.display.set_mode((800, 800))
 
 # Defining the title and icon
-pygame.display.set_caption("Galaga")
+pygame.display.set_caption("Space Wars")
 icon = pygame.image.load('img\\icon.png')
 pygame.display.set_icon(icon)
 
@@ -32,10 +32,11 @@ enemySkin = pygame.image.load('img\\enemy.png')
 enemyX = random.randint(25, 675)
 enemyY = 50
 enemyX_change = 0.3
+enemyY_change = 32
 
 
-def enemy(x):
-    screen.blit(enemySkin, (x, enemyY))
+def enemy(x, y):
+    screen.blit(enemySkin, (x, y))
 
 
 # Defining bullet skin
@@ -102,18 +103,20 @@ while running:
     enemyX += enemyX_change
     if enemyX <= 25:
         enemyX_change = 0.3
+        enemyY += enemyY_change
     elif enemyX >= 675:
         enemyX_change = -0.3
+        enemyY += enemyY_change
 
     # Definig the colision function
     colision = IsColision(enemyX, enemyY, bulletX, bulletY)
     if colision:
+        enemyX = random.randint(50, 650)
+        enemyY = random.randint(50, 150)
         bullet_state = "ready"
         bulletY = 650
         score += 1
         print(score)
-
-    enemy(enemyX)
 
     # Defining bullet rules to moviment
     if bulletY <= 0:
@@ -125,4 +128,5 @@ while running:
 
     # Calling our functions to creat characters
     player(playerX)
+    enemy(enemyX, enemyY)
     pygame.display.update()
